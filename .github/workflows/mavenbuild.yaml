@@ -3,8 +3,6 @@ name: Java CI with Maven
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -15,10 +13,10 @@ jobs:
       mysql:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: ${{ secrets.WORKFLOW_DATABASE_TEST }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.WF_DB_PSW }}
           MYSQL_DATABASE: dev
           MYSQL_USER: testUser
-          MYSQL_PASSWORD: ${{ secrets.WORKFLOW_DATABASE_TEST }}
+          MYSQL_PASSWORD: ${{ secrets.WF_DB_PSW }}
         ports:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=5
