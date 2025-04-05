@@ -13,14 +13,13 @@ public class DatabaseSeeder {
   CommandLineRunner initDatabase(ShipRepository shipRepository){
     return args -> {
 
-      shipRepository.deleteAll();
+      if(shipRepository.count() == 0){
+        Ship ship1 = new Ship("Island Contender", "PSV", "Equinor UK", "Supply duties", "Bergen");
+        Ship ship2 = new Ship("Island Vanguard", "AHTS", "AkerPB", "All duties incl ROV", "Bergen");
 
-      Ship ship1 = new Ship("Island Contender", "PSV", "Equinor UK", "Supply duties", "Bergen");
-      Ship ship2 = new Ship("Island Vanguard", "AHTS", "AkerPB", "All duties incl ROV", "Bergen");
-
-      shipRepository.save(ship1);
-      shipRepository.save(ship2);
-
+        shipRepository.save(ship1);
+        shipRepository.save(ship2);
+      }
     };
   }
 }
