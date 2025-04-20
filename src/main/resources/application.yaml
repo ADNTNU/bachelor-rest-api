@@ -16,4 +16,7 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8081}
+
+jwt:
+  secret_key: ${JWT_KEY:YouAndIJudasEffectSpineLittleDarkAgesKnockAtMyDoor}
