@@ -3,15 +3,16 @@ package no.ntnu.gr10.bachelor_rest_api.security;
 import io.jsonwebtoken.*;
 import no.ntnu.gr10.bachelor_rest_api.dto.JwtPayload;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
@@ -22,7 +23,8 @@ public class JwtUtil {
   private static final String SCOPES_CLAIM = "scopes";
 
 
-  public JwtPayload verifyTokenAndGetPayload(String token) throws JwtException, IllegalArgumentException {
+  public JwtPayload verifyTokenAndGetPayload(String token)
+          throws JwtException, IllegalArgumentException {
     Claims claims = verifyTokenAndGetClaims(token);
 
     Integer companyId = claims.get(COMPANY_ID_CLAIM, Integer.class);
@@ -31,6 +33,7 @@ public class JwtUtil {
 
     List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
+    // TODO Clean up and factor to its own method, if you cant find a more clean way
     if (rawScopes instanceof String) {
       for (String scope : ((String) rawScopes).split("\\s+")) {
         String role = scope.startsWith("ROLE_") ? scope : "ROLE_" + scope;

@@ -1,10 +1,7 @@
 package no.ntnu.gr10.bachelor_rest_api.controller;
 
-import jakarta.annotation.security.RolesAllowed;
-import no.ntnu.gr10.bachelor_rest_api.dto.JwtPayload;
 import no.ntnu.gr10.bachelor_rest_api.entity.Ship;
 import no.ntnu.gr10.bachelor_rest_api.repository.ShipRepository;
-import no.ntnu.gr10.bachelor_rest_api.security.JwtUtil;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -17,11 +14,9 @@ import java.util.List;
 public class EchoController {
 
   private final ShipRepository shipRepository;
-  private final JwtUtil jwtUtil;
 
-  public EchoController(ShipRepository shipRepository, JwtUtil jwtUtil){
+  public EchoController(ShipRepository shipRepository){
     this.shipRepository = shipRepository;
-    this.jwtUtil = jwtUtil;
   }
 
   @GetMapping("/test")

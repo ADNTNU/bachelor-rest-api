@@ -9,27 +9,36 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Security configuration class for setting up authentication and authorization.
+ * This class configures the security filter chain, authentication manager, and password encoder.
+ *
+ * @author Daniel Neset
+ * @version 20.04.2025
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 public class SecurityConfig {
 
-  private final JwtAuthenticationFIlter jwtAuthenticationFIlter;
+  private final JwtAuthenticationFilter jwtAuthenticationFIlter;
 
-  public SecurityConfig(JwtAuthenticationFIlter jwtAuthenticationFIlter){
+  public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFIlter){
     this.jwtAuthenticationFIlter = jwtAuthenticationFIlter;
   }
 
   @Bean
-  SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
+  protected SecurityFilterChain configure
+          (HttpSecurity httpSecurity) throws Exception {
+    httpSecurity
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/test").hasRole("1")
+                    .requestMatchers("/fisheryActivities/**").hasRole("1")
                     .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtAuthenticationFIlter, UsernamePasswordAuthenticationFilter.class);
-    return http.build();
+    return httpSecurity.build();
   }
 }
