@@ -5,7 +5,6 @@ import no.ntnu.gr10.bachelor_rest_api.company.CompanyService;
 import no.ntnu.gr10.bachelor_rest_api.dto.ErrorResponse;
 import no.ntnu.gr10.bachelor_rest_api.excption.CompanyNotFoundException;
 import no.ntnu.gr10.bachelor_rest_api.fisheryActivity.dto.CreateFisheryActivity;
-import no.ntnu.gr10.bachelor_rest_api.security.JwtAuthenticationFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -36,8 +35,7 @@ public class FisheryActivityController {
 
       List<FisheryActivity> fisheryActivity = fisheryActivityService.getAllFisheryActivitiesWithCompanyId(companyId);
 
-      // TODO use a DTO that is more clean, dont send them the id´s for company nor this entity.
-
+      // TODO use a DTO that is more clean, dont send them the company object.
       return ResponseEntity.ok(fisheryActivity);
     }catch (Exception e){
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("An error occurred while fetching Fishery Activities"));
@@ -70,6 +68,7 @@ public class FisheryActivityController {
 
       fisheryActivityService.createFisheryActivity(fa);
 
+      // TODO use a DTO that is more clean, dont send them the company object.
       return ResponseEntity.ok(fa);
 
     } catch (CompanyNotFoundException e){

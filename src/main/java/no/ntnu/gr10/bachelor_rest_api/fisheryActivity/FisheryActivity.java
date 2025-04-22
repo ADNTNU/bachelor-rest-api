@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import no.ntnu.gr10.bachelor_rest_api.company.Company;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "fishery_activities")
@@ -14,7 +12,6 @@ public class FisheryActivity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  /** owning company */
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "company_id", nullable = false)
   private Company company;
@@ -43,26 +40,13 @@ public class FisheryActivity {
   @Column(name = "starting_point_lon", nullable = false)
   private Double startingPointLon;
 
-  /** length in meters (example “5321.061…” from your data) */
   @Column(name = "length")
   private Double length;
 
-  /**
-   * raw WKT geometry.
-   * If you’re using PostGIS + Hibernate Spatial,
-   * replace this with a LineString field:
-   *   @Type(type="org.hibernate.spatial.GeometryType")
-   *   @Column(columnDefinition="geometry(LineString,4326)")
-   *   private LineString geometry;
-   */
   @Column(name = "geometry", columnDefinition = "TEXT")
   private String geometry;
 
-  public FisheryActivity() {
-    // JPA
-  }
-
-  // -- getters & setters --
+  public FisheryActivity() {}
 
   public Long getId() {
     return id;
