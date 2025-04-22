@@ -34,7 +34,7 @@ public class JwtUtil {
     List<SimpleGrantedAuthority> authorities = new ArrayList<>();
 
     // TODO Clean up and refactor to its own method.
-    // TODO Use propper scope names, not just numbers
+    // TODO Use proper scope names, not just numbers
     if (rawScopes instanceof String) {
       for (String scope : ((String) rawScopes).split("\\s+")) {
         String role = scope.startsWith("ROLE_") ? scope : "ROLE_" + scope;

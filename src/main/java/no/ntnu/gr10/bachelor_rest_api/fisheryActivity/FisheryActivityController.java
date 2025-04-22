@@ -12,6 +12,7 @@ import no.ntnu.gr10.bachelor_rest_api.dto.ErrorResponse;
 import no.ntnu.gr10.bachelor_rest_api.excption.CompanyNotFoundException;
 import no.ntnu.gr10.bachelor_rest_api.excption.FisheryActivityNotFoundException;
 import no.ntnu.gr10.bachelor_rest_api.fisheryActivity.dto.CreateFisheryActivity;
+import no.ntnu.gr10.bachelor_rest_api.fisheryActivity.dto.ResponseFisheryActivity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -21,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/fisheryActivities")
@@ -50,16 +52,19 @@ public class FisheryActivityController {
     try {
       Integer companyId = (Integer) authentication.getPrincipal();
 
-      List<FisheryActivity> fisheryActivity = fisheryActivityService.getAllFisheryActivitiesWithCompanyId(companyId);
+      List<ResponseFisheryActivity> responseFisheryActivities = fisheryActivityService
+              .getAllFisheryActivitiesWithCompanyId(companyId)
+              .stream()
+              .map(ResponseFisheryActivity::fromEntity)
+              .toList();
 
-      // TODO use a DTO that is more clean, dont send them the company object.
-      return ResponseEntity.ok(fisheryActivity);
+      return ResponseEntity.ok(responseFisheryActivities);
     }catch (Exception e){
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorResponse("An error occurred while fetching Fishery Activities"));
     }
   }
 
-  // TODO add fault error message if it is empty!
+
   @Operation(summary = "Get fishery activity by ID",
           description = "Retrieve a single fishery activity by its ID for the authenticated company.",
           security = @SecurityRequirement(name = "bearerAuth"))
@@ -71,6 +76,8 @@ public class FisheryActivityController {
           @ApiResponse(responseCode = "500", description = "Internal server error",
                   content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
+
+
   @GetMapping("/{id}")
   public ResponseEntity<?> getById(
           @PathVariable
@@ -78,9 +85,9 @@ public class FisheryActivityController {
           Authentication authentication) {
     try {
       Integer companyId = (Integer) authentication.getPrincipal();
-      var fa = fisheryActivityService.getByIdAndCompanyId(id, companyId);
+      FisheryActivity fa = fisheryActivityService.getByIdAndCompanyId(id, companyId);
 
-      return ResponseEntity.ok(fa);
+      return ResponseEntity.ok(ResponseFisheryActivity.fromEntity(fa));
     } catch (FisheryActivityNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
               .body(new ErrorResponse("FisheryActivity not found"));
@@ -92,7 +99,6 @@ public class FisheryActivityController {
   }
 
 
-  // TODO add method level autorization for special scopes, like ability to create fishery activities
   @Operation(summary = "Create a new fishery activity",
           description = "Create a fishery activity under the authenticated company.",
           security = @SecurityRequirement(name = "bearerAuth")
@@ -115,10 +121,9 @@ public class FisheryActivityController {
     try {
       Integer companyId = (Integer) authentication.getPrincipal();
 
-      fisheryActivityService.createFisheryActivity(createFisheryActivity, companyId);
+      FisheryActivity fisheryActivity = fisheryActivityService.createFisheryActivity(createFisheryActivity, companyId);
 
-      // TODO use a DTO that is more clean, dont send them the company object.
-      return ResponseEntity.ok(createFisheryActivity);
+      return ResponseEntity.ok(ResponseFisheryActivity.fromEntity(fisheryActivity));
 
     } catch (CompanyNotFoundException e){
       log.error("Valid token has an invalid company id.");
@@ -154,8 +159,9 @@ public class FisheryActivityController {
           Authentication authentication) {
     try {
       Integer companyId = (Integer) authentication.getPrincipal();
-      var updated = fisheryActivityService.updateForCompany(id, cmd, companyId);
-      return ResponseEntity.ok(updated);
+      FisheryActivity fisheryActivity = fisheryActivityService.updateForCompany(id, cmd, companyId);
+
+      return ResponseEntity.ok(ResponseFisheryActivity.fromEntity(fisheryActivity));
     } catch (FisheryActivityNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
               .body(new ErrorResponse("FisheryActivity not found"));
@@ -188,6 +194,7 @@ public class FisheryActivityController {
     try {
       Integer companyId = (Integer) authentication.getPrincipal();
       fisheryActivityService.deleteByIdAndCompanyId(id, companyId);
+
       return ResponseEntity.noContent().build();
     } catch (FisheryActivityNotFoundException e) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)

@@ -4,7 +4,6 @@ import no.ntnu.gr10.bachelor_rest_api.company.Company;
 import no.ntnu.gr10.bachelor_rest_api.company.CompanyService;
 import no.ntnu.gr10.bachelor_rest_api.excption.CompanyNotFoundException;
 import no.ntnu.gr10.bachelor_rest_api.fisheryActivity.dto.CreateFisheryActivity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
