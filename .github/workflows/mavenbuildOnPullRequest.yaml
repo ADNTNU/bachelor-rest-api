@@ -57,7 +57,7 @@ jobs:
 
       - name: Build & push Docker image
         uses: docker/build-push-action@v3
-       with:
+        with:
           context: .
           push: true
           tags: danielneset/bachelor-rest-api:${{ env.IMAGE_TAG }}
