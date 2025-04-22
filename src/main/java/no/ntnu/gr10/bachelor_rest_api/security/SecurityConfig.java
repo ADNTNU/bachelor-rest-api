@@ -36,6 +36,10 @@ public class SecurityConfig {
             .cors(cors -> cors.disable())
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/fisheryActivities/**").hasRole("1")
+                    .requestMatchers(
+                            "/swagger-ui/**",
+                            "/v3/api-docs/**"
+                            ).permitAll()
                     .anyRequest().authenticated())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtAuthenticationFIlter, UsernamePasswordAuthenticationFilter.class);
