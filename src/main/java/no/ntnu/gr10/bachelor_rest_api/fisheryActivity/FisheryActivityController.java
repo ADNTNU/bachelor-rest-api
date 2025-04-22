@@ -43,6 +43,7 @@ public class FisheryActivityController {
   }
 
 
+  // TODO add method level autorization for special scopes, like ability to create fishery activities
   @PostMapping("/create")
   public ResponseEntity<?> addFisheryActivity(
           @RequestBody CreateFisheryActivity createFisheryActivity,
