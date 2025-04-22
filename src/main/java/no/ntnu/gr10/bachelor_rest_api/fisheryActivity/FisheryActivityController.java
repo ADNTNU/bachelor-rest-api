@@ -110,7 +110,7 @@ public class FisheryActivityController {
           @ApiResponse(responseCode = "500", description = "Internal server error",
                   content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
-  @PreAuthorize("hasRole('2')")
+  @PreAuthorize("hasRole('FisheryActAdm')")
   @PostMapping("/create")
   public ResponseEntity<?> addFisheryActivity(
           @RequestBody
@@ -151,7 +151,7 @@ public class FisheryActivityController {
                   content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   @PutMapping("/{id}")
-  @PreAuthorize("hasRole('2')")
+  @PreAuthorize("hasRole('FisheryActAdm')")
   public ResponseEntity<?> updateFisheryActivity(
           @PathVariable Long id,
           @RequestBody CreateFisheryActivity cmd,
@@ -186,7 +186,7 @@ public class FisheryActivityController {
                   content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
   })
   @DeleteMapping("/{id}")
-  @PreAuthorize("hasRole('2')")
+  @PreAuthorize("hasRole('FisheryActAdm')")
   public ResponseEntity<?> deleteFisheryActivity(
           @PathVariable Long id,
           Authentication authentication) {
