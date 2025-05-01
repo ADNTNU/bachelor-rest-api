@@ -51,13 +51,13 @@ jobs:
           DB_NAME: dev
 
 
-      - name: Set unique image tag
-        id: unique-image-tag
-        run: echo "IMAGE_TAG=prod-${{ github.sha }}" >> $GITHUB_ENV
+      #- name: Set unique image tag
+      #  id: unique-image-tag
+      #  run: echo "IMAGE_TAG=prod-${{ github.sha }}" >> $GITHUB_ENV
 
-      - name: Build & push Docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: danielneset/bachelor-rest-api:${{ env.IMAGE_TAG }}
+      #- name: Build & push Docker image
+      #  uses: docker/build-push-action@v3
+      #  with:
+      #    context: .
+      #    push: true
+      #    tags: danielneset/bachelor-rest-api:${{ env.IMAGE_TAG }}
