@@ -2,19 +2,24 @@ package no.ntnu.gr10.bachelor_rest_api.security;
 
 import org.springframework.security.core.GrantedAuthority;
 
-// TODO Experiment if this can be used for the hard coded Scopes keys.
+/**
+ * Application scopes as an enum, implementing Spring Security’s GrantedAuthority.
+ */
 public enum Scope implements GrantedAuthority {
-  FISHERY,
-  CREATE_FISHERY;
+  FISHERY_ACTIVITY("fishery_activity");
 
+  private final String authority;
 
-  @Override
-  public String getAuthority() {
-    // Prefixing with SCOPE_ is conventional for OAuth2ResourceServer
-    return "SCOPE_" + name();
+  Scope(String authority) {
+    this.authority = authority;
   }
 
-  public static Scope fromTokenValue(String tokenVal) {
-    return Scope.valueOf(tokenVal);
+  /**
+   * Returns the authority string as it appears in the JWT claim.
+   *
+   * @return the authority key in the token
+   */
+  public String getAuthority() {
+    return authority;
   }
 }

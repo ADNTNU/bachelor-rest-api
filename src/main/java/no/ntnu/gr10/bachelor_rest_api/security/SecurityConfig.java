@@ -27,7 +27,6 @@ public class SecurityConfig {
     this.jwtAuthenticationFIlter = jwtAuthenticationFIlter;
   }
 
-  // TODO Maybe use a enum for the scopes?
   @Bean
   protected SecurityFilterChain configure
           (HttpSecurity httpSecurity) throws Exception {
@@ -35,7 +34,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.disable())
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/fisheryActivities/**").hasRole("fishery_activity")
+                    .requestMatchers("/fisheryActivities/**").hasRole(Scope.FISHERY_ACTIVITY.getAuthority())
                     .requestMatchers(
                             "/swagger-ui/**",
                             "/v3/api-docs/**"
