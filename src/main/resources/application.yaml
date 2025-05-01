@@ -8,7 +8,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: ${DDL:create}
+      ddl-auto: ${DDL:update}
     show-sql: true
     properties:
       hibernate:
@@ -16,4 +16,11 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQL8Dialect
 server:
-  port: ${PORT:8080}
+  port: ${PORT:8081}
+
+jwt:
+  secret_key: ${JWT_KEY:YouAndIJudasEffectSpineLittleDarkAgesKnockAtMyDoor}
+
+springdoc:
+  swagger-ui:
+    path: "/swagger-ui.html"
