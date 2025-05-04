@@ -1,5 +1,6 @@
 package no.ntnu.gr10.bachelor_rest_api.fisheryActivity;
 
+import no.ntnu.gr10.bachelor_rest_api.excption.FisheryActivityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class FisheryActivityService {
   }
 
   public FisheryActivity getByIdAndCompanyId(Long id, Integer companyId){
-    return fisheryActivityRepository.findFisheryActivityByIdAndCompany_Id(id, companyId.longValue());
+    return fisheryActivityRepository.findFisheryActivityByIdAndCompany_Id(id, companyId.longValue())
+            .orElseThrow(() -> new FisheryActivityNotFoundException("Could not find Fishery Activity with that ID!"));
   }
 
 
