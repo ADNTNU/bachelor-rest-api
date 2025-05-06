@@ -6,7 +6,8 @@ import org.springframework.security.core.GrantedAuthority;
  * Application scopes as an enum, implementing Spring Security’s GrantedAuthority.
  */
 public enum Scope implements GrantedAuthority {
-  FISHERY_ACTIVITY("fishery_activity");
+  FISHERY_ACTIVITY("fishery_activity"),
+  FISHING_FACILITY("fishing_facility");
 
   private final String authority;
 
